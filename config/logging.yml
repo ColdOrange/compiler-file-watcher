@@ -1,0 +1,5 @@
+type: text  # text or json
+level: debug
+console: false
+file: compiler_file_watcher.log
+rotate: 1  # rotate hours
