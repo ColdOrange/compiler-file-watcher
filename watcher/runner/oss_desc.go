@@ -18,8 +18,8 @@ func NewOssDescRunner(w http.ResponseWriter, r *http.Request) *OssDescRunner {
 }
 
 func (p *OssDescRunner) Run() error {
-	// save request file
-	localFilePath, err := p.saveRequestFile()
+	// save request files
+	localFilePaths, err := p.saveRequestFiles()
 	if err != nil {
 		return fmt.Errorf("saveRequestFile err: %v", err)
 	}
@@ -32,10 +32,13 @@ func (p *OssDescRunner) Run() error {
 	}
 
 	// upload compiled files
-	baseFilePath := strings.TrimSuffix(localFilePath, ".xml")
-	maybeGeneratedFiles := []string{
-		baseFilePath + ".h",
-		baseFilePath + ".cc",
+	var maybeGeneratedFiles []string
+	for _, localFilePath := range localFilePaths {
+		baseFilePath := strings.TrimSuffix(localFilePath, ".xml")
+		maybeGeneratedFiles = append(maybeGeneratedFiles, []string{
+			baseFilePath + ".h",
+			baseFilePath + ".cpp",
+		}...)
 	}
 	err = p.uploadCompiledFiles(maybeGeneratedFiles)
 	if err != nil {

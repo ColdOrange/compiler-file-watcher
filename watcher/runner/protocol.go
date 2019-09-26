@@ -18,8 +18,8 @@ func NewProtocolRunner(w http.ResponseWriter, r *http.Request) *ProtocolRunner {
 }
 
 func (p *ProtocolRunner) Run() error {
-	// save request file
-	localFilePath, err := p.saveRequestFile()
+	// save request files
+	localFilePaths, err := p.saveRequestFiles()
 	if err != nil {
 		return fmt.Errorf("saveRequestFile err: %v", err)
 	}
@@ -33,12 +33,15 @@ func (p *ProtocolRunner) Run() error {
 	}
 
 	// upload compiled files
-	baseFilePath := strings.TrimSuffix(localFilePath, ".proto")
-	maybeGeneratedFiles := []string{
-		baseFilePath + ".pb.h",
-		baseFilePath + ".pb.cc",
-		baseFilePath + ".pbp.h",
-		baseFilePath + ".pbp.cc",
+	var maybeGeneratedFiles []string
+	for _, localFilePath := range localFilePaths {
+		baseFilePath := strings.TrimSuffix(localFilePath, ".proto")
+		maybeGeneratedFiles = append(maybeGeneratedFiles, []string{
+			baseFilePath + ".pb.h",
+			baseFilePath + ".pb.cc",
+			baseFilePath + ".pbp.h",
+			baseFilePath + ".pbp.cc",
+		}...)
 	}
 	err = p.uploadCompiledFiles(maybeGeneratedFiles)
 	if err != nil {
