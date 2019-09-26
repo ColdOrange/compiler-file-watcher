@@ -9,10 +9,12 @@ import (
 )
 
 var WatcherConfig struct {
-	Addr        string // listen addr
-	SourceDir   string // local project dir
-	RemoteDir   string // remote project dir
-	MakeCmdPath string // make cmd path
+	Addr             string // listen addr
+	SourceDir        string // local project dir
+	RemoteDir        string // remote project dir
+	MakeCmdPath      string // make cmd path
+	ProtocolBuildDir string // protocol build dir, make cmd working dir for protocol files
+	OssDescBuildDir  string // oss_desc build dir, make cmd working dir for oss_desc files
 }
 
 var LoggingConfig struct {
@@ -70,16 +72,32 @@ func initWatcherConfig() {
 		panic("watcher.yml config err: `make_cmd_path` not set")
 	}
 
+	// protocol build dir
+	protocolBuildDir := watcherConfig.GetString("protocol_build_dir")
+	if protocolBuildDir == "" {
+		panic("watcher.yml config err: `protocol_build_dir` not set")
+	}
+
+	// oss_desc build dir
+	ossDescBuildDir := watcherConfig.GetString("oss_desc_build_dir")
+	if ossDescBuildDir == "" {
+		panic("watcher.yml config err: `oss_desc_build_dir` not set")
+	}
+
 	WatcherConfig = struct {
-		Addr        string
-		SourceDir   string
-		RemoteDir   string
-		MakeCmdPath string
+		Addr             string
+		SourceDir        string
+		RemoteDir        string
+		MakeCmdPath      string
+		ProtocolBuildDir string
+		OssDescBuildDir  string
 	}{
-		Addr:        addr,
-		SourceDir:   sourceDir,
-		RemoteDir:   remoteDir,
-		MakeCmdPath: makeCmdPath,
+		Addr:             addr,
+		SourceDir:        sourceDir,
+		RemoteDir:        remoteDir,
+		MakeCmdPath:      makeCmdPath,
+		ProtocolBuildDir: path.Join(sourceDir, protocolBuildDir),
+		OssDescBuildDir:  path.Join(sourceDir, ossDescBuildDir),
 	}
 }
 

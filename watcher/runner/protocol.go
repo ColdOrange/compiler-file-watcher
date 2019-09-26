@@ -3,7 +3,6 @@ package runner
 import (
 	"fmt"
 	"net/http"
-	"path"
 	"strings"
 
 	"compiler-file-watcher/config"
@@ -25,9 +24,7 @@ func (p *ProtocolRunner) Run() error {
 	}
 
 	// compile
-	// TODO: config build dir
-	buildDir := path.Join(config.WatcherConfig.SourceDir, "/build/libsrc/protocol")
-	err = p.compile(buildDir)
+	err = p.compile(config.WatcherConfig.ProtocolBuildDir)
 	if err != nil {
 		return fmt.Errorf("compile err: %v", err)
 	}

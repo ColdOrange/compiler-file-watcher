@@ -3,7 +3,6 @@ package runner
 import (
 	"fmt"
 	"net/http"
-	"path"
 	"strings"
 
 	"compiler-file-watcher/config"
@@ -25,8 +24,7 @@ func (p *OssDescRunner) Run() error {
 	}
 
 	// compile
-	buildDir := path.Join(config.WatcherConfig.SourceDir, "/build/libsrc/log")
-	err = p.compile(buildDir)
+	err = p.compile(config.WatcherConfig.OssDescBuildDir)
 	if err != nil {
 		return fmt.Errorf("compile err: %v", err)
 	}
