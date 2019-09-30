@@ -2,5 +2,13 @@ addr: 0.0.0.0:8759
 source_dir: /data1/home/wenjuxu/svr_proj/trunk
 remote_dir: c:/Users/wenjuxu/Desktop/svr_proj/trunk
 make_cmd_path: /usr/bin/bmake
-protocol_build_dir: build/libsrc/protocol
-oss_desc_build_dir: build/libsrc/log
+
+protocol:
+  source_dir: libsrc/protocol
+  target_dir: build/libsrc/protocol
+  build_dir: build/libsrc/protocol
+
+oss_desc:
+  source_dir: libsrc/log
+  target_dir: libsrc/log
+  build_dir: build/libsrc

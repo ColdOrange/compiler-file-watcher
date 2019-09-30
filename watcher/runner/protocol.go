@@ -24,7 +24,7 @@ func (p *ProtocolRunner) Run() error {
 	}
 
 	// compile
-	err = p.compile(config.WatcherConfig.ProtocolBuildDir)
+	err = p.compile(config.WatcherConfig.ProtocolConfig.BuildDir)
 	if err != nil {
 		return fmt.Errorf("compile err: %v", err)
 	}
@@ -32,7 +32,9 @@ func (p *ProtocolRunner) Run() error {
 	// upload compiled files
 	var maybeGeneratedFiles []string
 	for _, localFilePath := range localFilePaths {
-		baseFilePath := strings.TrimSuffix(localFilePath, ".proto")
+		baseFilePath := strings.Replace(strings.TrimSuffix(localFilePath, ".proto"),
+			config.WatcherConfig.ProtocolConfig.SourceDir,
+			config.WatcherConfig.ProtocolConfig.TargetDir, -1)
 		maybeGeneratedFiles = append(maybeGeneratedFiles, []string{
 			baseFilePath + ".pb.h",
 			baseFilePath + ".pb.cc",

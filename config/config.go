@@ -8,13 +8,19 @@ import (
 	"github.com/spf13/viper"
 )
 
+type RunnerConfig struct {
+	SourceDir string // dir of source files
+	TargetDir string //	dir of generated files
+	BuildDir  string //	dir to run build cmd
+}
+
 var WatcherConfig struct {
-	Addr             string // listen addr
-	SourceDir        string // local project dir
-	RemoteDir        string // remote project dir
-	MakeCmdPath      string // make cmd path
-	ProtocolBuildDir string // protocol build dir, make cmd working dir for protocol files
-	OssDescBuildDir  string // oss_desc build dir, make cmd working dir for oss_desc files
+	Addr           string // listen addr
+	SourceDir      string // local project dir
+	RemoteDir      string // remote project dir
+	MakeCmdPath    string // make cmd path
+	ProtocolConfig RunnerConfig
+	OssDescConfig  RunnerConfig
 }
 
 var LoggingConfig struct {
@@ -72,32 +78,49 @@ func initWatcherConfig() {
 		panic("watcher.yml config err: `make_cmd_path` not set")
 	}
 
-	// protocol build dir
-	protocolBuildDir := watcherConfig.GetString("protocol_build_dir")
-	if protocolBuildDir == "" {
-		panic("watcher.yml config err: `protocol_build_dir` not set")
-	}
+	// protocol runner config
+	protocolConfig := initRunnerConfig(watcherConfig, "protocol")
 
-	// oss_desc build dir
-	ossDescBuildDir := watcherConfig.GetString("oss_desc_build_dir")
-	if ossDescBuildDir == "" {
-		panic("watcher.yml config err: `oss_desc_build_dir` not set")
-	}
+	// oss_desc runner config
+	ossDescConfig := initRunnerConfig(watcherConfig, "oss_desc")
 
 	WatcherConfig = struct {
-		Addr             string
-		SourceDir        string
-		RemoteDir        string
-		MakeCmdPath      string
-		ProtocolBuildDir string
-		OssDescBuildDir  string
+		Addr           string
+		SourceDir      string
+		RemoteDir      string
+		MakeCmdPath    string
+		ProtocolConfig RunnerConfig
+		OssDescConfig  RunnerConfig
 	}{
-		Addr:             addr,
-		SourceDir:        sourceDir,
-		RemoteDir:        remoteDir,
-		MakeCmdPath:      makeCmdPath,
-		ProtocolBuildDir: path.Join(sourceDir, protocolBuildDir),
-		OssDescBuildDir:  path.Join(sourceDir, ossDescBuildDir),
+		Addr:           addr,
+		SourceDir:      sourceDir,
+		RemoteDir:      remoteDir,
+		MakeCmdPath:    makeCmdPath,
+		ProtocolConfig: protocolConfig,
+		OssDescConfig:  ossDescConfig,
+	}
+}
+
+func initRunnerConfig(config *viper.Viper, runner string) RunnerConfig {
+	sourceDir := config.GetString(fmt.Sprintf("%s.source_dir", runner))
+	if sourceDir == "" {
+		panic(fmt.Sprintf("watcher.yml config err: `%s.source_dir` not set", runner))
+	}
+
+	targetDir := config.GetString(fmt.Sprintf("%s.target_dir", runner))
+	if targetDir == "" {
+		panic(fmt.Sprintf("watcher.yml config err: `%s.target_dir` not set", runner))
+	}
+
+	buildDir := config.GetString(fmt.Sprintf("%s.build_dir", runner))
+	if buildDir == "" {
+		panic(fmt.Sprintf("watcher.yml config err: `%s.build_dir` not set", runner))
+	}
+
+	return RunnerConfig{
+		SourceDir: path.Join(config.GetString("source_dir"), sourceDir),
+		TargetDir: path.Join(config.GetString("source_dir"), targetDir),
+		BuildDir:  path.Join(config.GetString("source_dir"), buildDir),
 	}
 }
 

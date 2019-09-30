@@ -24,7 +24,7 @@ func (p *OssDescRunner) Run() error {
 	}
 
 	// compile
-	err = p.compile(config.WatcherConfig.OssDescBuildDir)
+	err = p.compile(config.WatcherConfig.OssDescConfig.BuildDir)
 	if err != nil {
 		return fmt.Errorf("compile err: %v", err)
 	}
@@ -32,7 +32,9 @@ func (p *OssDescRunner) Run() error {
 	// upload compiled files
 	var maybeGeneratedFiles []string
 	for _, localFilePath := range localFilePaths {
-		baseFilePath := strings.TrimSuffix(localFilePath, ".xml")
+		baseFilePath := strings.Replace(strings.TrimSuffix(localFilePath, ".xml"),
+			config.WatcherConfig.OssDescConfig.SourceDir,
+			config.WatcherConfig.OssDescConfig.TargetDir, -1)
 		maybeGeneratedFiles = append(maybeGeneratedFiles, []string{
 			baseFilePath + ".h",
 			baseFilePath + ".cpp",
