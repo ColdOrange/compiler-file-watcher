@@ -1,6 +1,7 @@
 package watcher
 
 import (
+	"fmt"
 	"net/http"
 
 	log "compiler-file-watcher/logging"
@@ -10,20 +11,18 @@ import (
 func handleUploadProtocol(w http.ResponseWriter, r *http.Request) {
 	err := runner.NewProtocolRunner(w, r).Run()
 	if err != nil {
-		log.Errorf("handleUploadProtocol err: %v", err)
-		w.WriteHeader(http.StatusInternalServerError)
-	} else {
-		w.WriteHeader(http.StatusOK)
+		errMsg := fmt.Sprintf("handleUploadProtocol err: %v", err)
+		http.Error(w, errMsg, http.StatusInternalServerError)
+		log.Error(errMsg)
 	}
 }
 
 func handleUploadOssDesc(w http.ResponseWriter, r *http.Request) {
 	err := runner.NewOssDescRunner(w, r).Run()
 	if err != nil {
-		log.Errorf("handleUploadOssDesc err: %v", err)
-		w.WriteHeader(http.StatusInternalServerError)
-	} else {
-		w.WriteHeader(http.StatusOK)
+		errMsg := fmt.Sprintf("handleUploadOssDesc err: %v", err)
+		http.Error(w, errMsg, http.StatusInternalServerError)
+		log.Error(errMsg)
 	}
 }
 
