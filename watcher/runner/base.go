@@ -39,11 +39,12 @@ func (b *baseRunner) saveRequestFiles() ([]string, error) {
 	return localFilePaths, nil
 }
 
-// Run `make` command to compile and generate files to response.
-func (b *baseRunner) compile(buildDir string) error {
+// Run command to compile and generate files to response.
+func (b *baseRunner) compile(cmdPath string, cmdArgs []string, cmdDir string) error {
 	cmd := &exec.Cmd{
-		Path: config.WatcherConfig.MakeCmdPath,
-		Dir:  buildDir,
+		Path: cmdPath,
+		Args: cmdArgs,
+		Dir:  cmdDir,
 	}
 
 	_, err := cmd.CombinedOutput()

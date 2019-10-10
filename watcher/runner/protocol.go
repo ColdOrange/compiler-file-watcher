@@ -24,7 +24,7 @@ func (p *ProtocolRunner) Run() error {
 	}
 
 	// compile
-	err = p.compile(config.WatcherConfig.ProtocolConfig.BuildDir)
+	err = p.compile(config.WatcherConfig.MakeCmdPath, []string{"generate_pb"}, config.WatcherConfig.ProtocolConfig.BuildDir)
 	if err != nil {
 		return fmt.Errorf("compile err: %v", err)
 	}

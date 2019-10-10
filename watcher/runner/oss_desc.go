@@ -24,7 +24,7 @@ func (p *OssDescRunner) Run() error {
 	}
 
 	// compile
-	err = p.compile(config.WatcherConfig.OssDescConfig.BuildDir)
+	err = p.compile(config.WatcherConfig.MakeCmdPath, nil, config.WatcherConfig.OssDescConfig.BuildDir)
 	if err != nil {
 		return fmt.Errorf("compile err: %v", err)
 	}
