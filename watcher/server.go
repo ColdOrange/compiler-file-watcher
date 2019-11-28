@@ -26,10 +26,20 @@ func handleUploadOssDesc(w http.ResponseWriter, r *http.Request) {
 	}
 }
 
+func handleUploadExcel(w http.ResponseWriter, r *http.Request) {
+	err := runner.NewExcelRunner(w, r).Run()
+	if err != nil {
+		errMsg := fmt.Sprintf("handleUploadExcel err: %v", err)
+		http.Error(w, errMsg, http.StatusInternalServerError)
+		log.Error(errMsg)
+	}
+}
+
 func NewServer(addr string) *http.Server {
 	handler := NewHandler()
 	handler.Bind("/upload/protocol", handleUploadProtocol)
 	handler.Bind("/upload/oss_desc", handleUploadOssDesc)
+	handler.Bind("/upload/excel", handleUploadExcel)
 
 	return &http.Server{
 		Addr:    addr,

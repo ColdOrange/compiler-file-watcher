@@ -1,6 +1,6 @@
 addr: 0.0.0.0:8759
-source_dir: /data1/home/wenjuxu/svr_proj/trunk
-remote_dir: c:/Users/wenjuxu/Desktop/svr_proj/trunk
+source_dir: /data1/home/wenjuxu/KOServer
+remote_dir: c:/Users/wenjuxu/Desktop/KOServer
 make_cmd_path: /usr/bin/bmake
 
 protocol:
@@ -12,3 +12,8 @@ oss_desc:
   source_dir: libsrc/log
   target_dir: libsrc/log
   build_dir: build/libsrc
+
+excel:
+  source_dir: excel/excel_config
+  target_dir: build/excel/confgen/conf
+  build_dir: build/excel

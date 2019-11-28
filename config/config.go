@@ -21,6 +21,7 @@ var WatcherConfig struct {
 	MakeCmdPath    string // make cmd path
 	ProtocolConfig RunnerConfig
 	OssDescConfig  RunnerConfig
+	ExcelConfig    RunnerConfig
 }
 
 var LoggingConfig struct {
@@ -84,6 +85,9 @@ func initWatcherConfig() {
 	// oss_desc runner config
 	ossDescConfig := initRunnerConfig(watcherConfig, "oss_desc")
 
+	// excel runner config
+	excelConfig := initRunnerConfig(watcherConfig, "excel")
+
 	WatcherConfig = struct {
 		Addr           string
 		SourceDir      string
@@ -91,6 +95,7 @@ func initWatcherConfig() {
 		MakeCmdPath    string
 		ProtocolConfig RunnerConfig
 		OssDescConfig  RunnerConfig
+		ExcelConfig    RunnerConfig
 	}{
 		Addr:           addr,
 		SourceDir:      sourceDir,
@@ -98,6 +103,7 @@ func initWatcherConfig() {
 		MakeCmdPath:    makeCmdPath,
 		ProtocolConfig: protocolConfig,
 		OssDescConfig:  ossDescConfig,
+		ExcelConfig:    excelConfig,
 	}
 }
 

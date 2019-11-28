@@ -7,4 +7,5 @@ type Runner interface {
 var (
 	_ Runner = &ProtocolRunner{}
 	_ Runner = &OssDescRunner{}
+	_ Runner = &ExcelRunner{}
 )
