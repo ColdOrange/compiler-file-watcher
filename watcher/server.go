@@ -26,6 +26,15 @@ func handleUploadOssDesc(w http.ResponseWriter, r *http.Request) {
 	}
 }
 
+func handleUploadTcaplusTable(w http.ResponseWriter, r *http.Request) {
+	err := runner.NewTcaplusTableRunner(w, r).Run()
+	if err != nil {
+		errMsg := fmt.Sprintf("handleUploadTcaplusTable err: %v", err)
+		http.Error(w, errMsg, http.StatusInternalServerError)
+		log.Error(errMsg)
+	}
+}
+
 func handleUploadExcel(w http.ResponseWriter, r *http.Request) {
 	err := runner.NewExcelRunner(w, r).Run()
 	if err != nil {
@@ -39,6 +48,7 @@ func NewServer(addr string) *http.Server {
 	handler := NewHandler()
 	handler.Bind("/upload/protocol", handleUploadProtocol)
 	handler.Bind("/upload/oss_desc", handleUploadOssDesc)
+	handler.Bind("/upload/tcaplus_table", handleUploadTcaplusTable)
 	handler.Bind("/upload/excel", handleUploadExcel)
 
 	return &http.Server{

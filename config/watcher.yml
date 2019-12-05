@@ -10,7 +10,12 @@ protocol:
 
 oss_desc:
   source_dir: libsrc/log
-  target_dir: libsrc/log
+  target_dir: build/libsrc/log
+  build_dir: build/libsrc
+
+tcaplus_table:
+  source_dir: libsrc/tcaplus_table_desc
+  target_dir: build/libsrc/tcaplus_table_desc
   build_dir: build/libsrc
 
 excel:

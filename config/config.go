@@ -15,13 +15,14 @@ type RunnerConfig struct {
 }
 
 var WatcherConfig struct {
-	Addr           string // listen addr
-	SourceDir      string // local project dir
-	RemoteDir      string // remote project dir
-	MakeCmdPath    string // make cmd path
-	ProtocolConfig RunnerConfig
-	OssDescConfig  RunnerConfig
-	ExcelConfig    RunnerConfig
+	Addr               string // listen addr
+	SourceDir          string // local project dir
+	RemoteDir          string // remote project dir
+	MakeCmdPath        string // make cmd path
+	ProtocolConfig     RunnerConfig
+	OssDescConfig      RunnerConfig
+	TcaplusTableConfig RunnerConfig
+	ExcelConfig        RunnerConfig
 }
 
 var LoggingConfig struct {
@@ -85,25 +86,30 @@ func initWatcherConfig() {
 	// oss_desc runner config
 	ossDescConfig := initRunnerConfig(watcherConfig, "oss_desc")
 
+	// tcaplus_table runner config
+	tcaplusTableConfig := initRunnerConfig(watcherConfig, "tcaplus_table")
+
 	// excel runner config
 	excelConfig := initRunnerConfig(watcherConfig, "excel")
 
 	WatcherConfig = struct {
-		Addr           string
-		SourceDir      string
-		RemoteDir      string
-		MakeCmdPath    string
-		ProtocolConfig RunnerConfig
-		OssDescConfig  RunnerConfig
-		ExcelConfig    RunnerConfig
+		Addr               string
+		SourceDir          string
+		RemoteDir          string
+		MakeCmdPath        string
+		ProtocolConfig     RunnerConfig
+		OssDescConfig      RunnerConfig
+		TcaplusTableConfig RunnerConfig
+		ExcelConfig        RunnerConfig
 	}{
-		Addr:           addr,
-		SourceDir:      sourceDir,
-		RemoteDir:      remoteDir,
-		MakeCmdPath:    makeCmdPath,
-		ProtocolConfig: protocolConfig,
-		OssDescConfig:  ossDescConfig,
-		ExcelConfig:    excelConfig,
+		Addr:               addr,
+		SourceDir:          sourceDir,
+		RemoteDir:          remoteDir,
+		MakeCmdPath:        makeCmdPath,
+		ProtocolConfig:     protocolConfig,
+		OssDescConfig:      ossDescConfig,
+		TcaplusTableConfig: tcaplusTableConfig,
+		ExcelConfig:        excelConfig,
 	}
 }
 

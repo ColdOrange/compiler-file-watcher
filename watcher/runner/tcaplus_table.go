@@ -8,15 +8,15 @@ import (
 	"compiler-file-watcher/config"
 )
 
-type OssDescRunner struct {
+type TcaplusTableRunner struct {
 	baseRunner
 }
 
-func NewOssDescRunner(w http.ResponseWriter, r *http.Request) *OssDescRunner {
-	return &OssDescRunner{baseRunner{w, r}}
+func NewTcaplusTableRunner(w http.ResponseWriter, r *http.Request) *TcaplusTableRunner {
+	return &TcaplusTableRunner{baseRunner{w, r}}
 }
 
-func (p *OssDescRunner) Run() error {
+func (p *TcaplusTableRunner) Run() error {
 	// save request files
 	localFilePaths, err := p.saveRequestFiles()
 	if err != nil {
@@ -24,7 +24,7 @@ func (p *OssDescRunner) Run() error {
 	}
 
 	// compile
-	err = p.compile(config.WatcherConfig.MakeCmdPath, []string{"gen_oss"}, config.WatcherConfig.OssDescConfig.BuildDir)
+	err = p.compile(config.WatcherConfig.MakeCmdPath, []string{"gen_tcaplus"}, config.WatcherConfig.TcaplusTableConfig.BuildDir)
 	if err != nil {
 		return fmt.Errorf("compile err: %v", err)
 	}
@@ -33,8 +33,8 @@ func (p *OssDescRunner) Run() error {
 	var maybeGeneratedFiles []string
 	for _, localFilePath := range localFilePaths {
 		baseFilePath := strings.Replace(strings.TrimSuffix(localFilePath, ".xml"),
-			config.WatcherConfig.OssDescConfig.SourceDir,
-			config.WatcherConfig.OssDescConfig.TargetDir, -1)
+			config.WatcherConfig.TcaplusTableConfig.SourceDir,
+			config.WatcherConfig.TcaplusTableConfig.TargetDir, -1)
 		maybeGeneratedFiles = append(maybeGeneratedFiles, []string{
 			baseFilePath + ".h",
 			baseFilePath + ".cpp",
