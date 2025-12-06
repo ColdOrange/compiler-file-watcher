@@ -1,8 +1,10 @@
 module compiler-file-watcher
 
+go 1.25.0
+
 require (
 	github.com/lestrrat-go/file-rotatelogs v2.2.0+incompatible
-	github.com/sirupsen/logrus v1.0.0
+	github.com/sirupsen/logrus v1.8.3
 	github.com/spf13/viper v1.0.0
 )
 
